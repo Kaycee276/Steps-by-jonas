@@ -10,22 +10,19 @@ function App() {
 
 const Counter = () => {
   const [count, setCount] = useState(0);
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
   // const [today, setToday] = useState(new Date());
 
   const date = new Date();
   date.setDate(date.getDate() + count);
 
-  const increaseStep = () => {
-    setStep((s) => {
-      return s + 1;
-    });
+  const handleReset = () => {
+    setCount(0);
+    setStep(1);
   };
 
-  const decreaseStep = () => {
-    setStep((s) => {
-      return s - 1;
-    });
+  const handleStep = (e) => {
+    setStep(Number(e.target.value));
   };
 
   const increaseCount = () => {
@@ -50,48 +47,32 @@ const Counter = () => {
 
   return (
     <div className="flex flex-col">
-      <section>
-        <button
-          style={{
-            padding: "5px",
-            border: "2px solid rgba(255,255,255,0.5)",
-            background: "#ddd",
-          }}
-          onClick={increaseStep}
-        >
-          +
-        </button>
-        Step: {step}
-        <button
-          style={{
-            padding: "5px",
-            border: "2px solid rgba(255,255,255,0.5)",
-            background: "#ddd",
-          }}
-          onClick={decreaseStep}
-        >
-          -
-        </button>
+      <section className="flex items-center gap-3">
+        <input
+          type="range"
+          min="1"
+          max="10"
+          onChange={handleStep}
+          value={step}
+        />
+        Step:{step}
       </section>
 
-      <section>
+      <section className="mt-3">
         <button
-          style={{
-            padding: "5px",
-            border: "2px solid rgba(255,255,255,0.5)",
-            background: "#ddd",
-          }}
+          className="p-2 px-2 border-2 border-gray-900 mx-2 rounded "
           onClick={increaseCount}
         >
           +
         </button>
-        Count: {count}
+        <input
+          type="text"
+          value={count}
+          className="border-2 p-2 border-gray-900 rounded"
+          onChange={(e) => setCount(Number(e.target.value))}
+        />
         <button
-          style={{
-            padding: "5px",
-            border: "2px solid rgba(255,255,255,0.5)",
-            background: "#ddd",
-          }}
+          className="p-2 px-2 border-2 border-gray-900 mx-2 rounded "
           onClick={decreaseCount}
         >
           -
@@ -108,6 +89,13 @@ const Counter = () => {
         &nbsp;
         <span>{date.toDateString()}</span>
       </p>
+
+      <div
+        style={{ display: count !== 0 || step !== 1 ? "block" : "none" }}
+        className="mx-auto mt-5 border-2 p-2 rounded-xl"
+      >
+        <button onClick={handleReset}>Reset</button>
+      </div>
     </div>
   );
 };
